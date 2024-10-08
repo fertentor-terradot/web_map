@@ -10,10 +10,13 @@
         <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
-        #map {
-            width: 1175px;
-            height: 681px;
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
         }
         </style>
         <title></title>
@@ -31,10 +34,11 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="data/guaranta_1.js"></script>
+        <script src="js/leaflet-measure.js"></script>
         <script src="data/FlowLine_5.js"></script>
-        <script src="data/guaranta_6.js"></script>
+        <script src="data/IntraFieldCluster_6.js"></script>
         <script src="data/guarantaplots_7.js"></script>
+        <script src="data/guaranta_8.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
@@ -73,6 +77,16 @@
         var zoomControl = L.control.zoom({
             position: 'topleft'
         }).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].className += ' fas fa-ruler';
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
@@ -89,7 +103,271 @@
         });
         layer_GoogleSatellite_0;
         map.addLayer(layer_GoogleSatellite_0);
-        function pop_guaranta_1(feature, layer) {
+        map.createPane('pane_MaxNDVI_1');
+        map.getPane('pane_MaxNDVI_1').style.zIndex = 401;
+        var img_MaxNDVI_1 = 'data/MaxNDVI_1.png';
+        var img_bounds_MaxNDVI_1 = [[-22.60978721753265,-50.161655970648845],[-22.547084810701104,-50.11539273351669]];
+        var layer_MaxNDVI_1 = new L.imageOverlay(img_MaxNDVI_1,
+                                              img_bounds_MaxNDVI_1,
+                                              {pane: 'pane_MaxNDVI_1'});
+        bounds_group.addLayer(layer_MaxNDVI_1);
+        map.addLayer(layer_MaxNDVI_1);
+        map.createPane('pane_LastNDVI_2');
+        map.getPane('pane_LastNDVI_2').style.zIndex = 402;
+        var img_LastNDVI_2 = 'data/LastNDVI_2.png';
+        var img_bounds_LastNDVI_2 = [[-22.60978721753265,-50.161655970648845],[-22.547084810701104,-50.11539273351669]];
+        var layer_LastNDVI_2 = new L.imageOverlay(img_LastNDVI_2,
+                                              img_bounds_LastNDVI_2,
+                                              {pane: 'pane_LastNDVI_2'});
+        bounds_group.addLayer(layer_LastNDVI_2);
+        map.addLayer(layer_LastNDVI_2);
+        map.createPane('pane_DEM_3');
+        map.getPane('pane_DEM_3').style.zIndex = 403;
+        var img_DEM_3 = 'data/DEM_3.png';
+        var img_bounds_DEM_3 = [[-22.60973151005297,-50.161655970648845],[-22.547106995996085,-50.115392733516664]];
+        var layer_DEM_3 = new L.imageOverlay(img_DEM_3,
+                                              img_bounds_DEM_3,
+                                              {pane: 'pane_DEM_3'});
+        bounds_group.addLayer(layer_DEM_3);
+        map.addLayer(layer_DEM_3);
+        map.createPane('pane_flowaccumulation_4');
+        map.getPane('pane_flowaccumulation_4').style.zIndex = 404;
+        var img_flowaccumulation_4 = 'data/flowaccumulation_4.png';
+        var img_bounds_flowaccumulation_4 = [[-22.60973151005297,-50.161655970648845],[-22.547106995996085,-50.115392733516664]];
+        var layer_flowaccumulation_4 = new L.imageOverlay(img_flowaccumulation_4,
+                                              img_bounds_flowaccumulation_4,
+                                              {pane: 'pane_flowaccumulation_4'});
+        bounds_group.addLayer(layer_flowaccumulation_4);
+        map.addLayer(layer_flowaccumulation_4);
+        function pop_FlowLine_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cat'] !== null ? autolinker.link(feature.properties['cat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_FlowLine_5_0() {
+            return {
+                pane: 'pane_FlowLine_5',
+                opacity: 1,
+                color: 'rgba(164,113,88,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_FlowLine_5');
+        map.getPane('pane_FlowLine_5').style.zIndex = 405;
+        map.getPane('pane_FlowLine_5').style['mix-blend-mode'] = 'normal';
+        var layer_FlowLine_5 = new L.geoJson(json_FlowLine_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_FlowLine_5',
+            layerName: 'layer_FlowLine_5',
+            pane: 'pane_FlowLine_5',
+            onEachFeature: pop_FlowLine_5,
+            style: style_FlowLine_5_0,
+        });
+        bounds_group.addLayer(layer_FlowLine_5);
+        map.addLayer(layer_FlowLine_5);
+        function pop_IntraFieldCluster_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ndvi'] !== null ? autolinker.link(feature.properties['ndvi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['clay_0_5'] !== null ? autolinker.link(feature.properties['clay_0_5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['clay_5_15'] !== null ? autolinker.link(feature.properties['clay_5_15'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['clay_15_30'] !== null ? autolinker.link(feature.properties['clay_15_30'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sand_0_5'] !== null ? autolinker.link(feature.properties['sand_0_5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sand_5_15'] !== null ? autolinker.link(feature.properties['sand_5_15'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sand_15_30'] !== null ? autolinker.link(feature.properties['sand_15_30'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lat'] !== null ? autolinker.link(feature.properties['lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lon'] !== null ? autolinker.link(feature.properties['lon'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['field_name'] !== null ? autolinker.link(feature.properties['field_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cluster'] !== null ? autolinker.link(feature.properties['cluster'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_IntraFieldCluster_6_0(feature) {
+            switch(String(feature.properties['cluster'])) {
+                case '0':
+                    return {
+                pane: 'pane_IntraFieldCluster_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(82,196,200,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1':
+                    return {
+                pane: 'pane_IntraFieldCluster_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(129,46,202,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '2':
+                    return {
+                pane: 'pane_IntraFieldCluster_6',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(163,229,110,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_IntraFieldCluster_6');
+        map.getPane('pane_IntraFieldCluster_6').style.zIndex = 406;
+        map.getPane('pane_IntraFieldCluster_6').style['mix-blend-mode'] = 'normal';
+        var layer_IntraFieldCluster_6 = new L.geoJson(json_IntraFieldCluster_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_IntraFieldCluster_6',
+            layerName: 'layer_IntraFieldCluster_6',
+            pane: 'pane_IntraFieldCluster_6',
+            onEachFeature: pop_IntraFieldCluster_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_IntraFieldCluster_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_IntraFieldCluster_6);
+        map.addLayer(layer_IntraFieldCluster_6);
+        function pop_guarantaplots_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['plot_type'] !== null ? autolinker.link(feature.properties['plot_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['field_name'] !== null ? autolinker.link(feature.properties['field_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['farm_name'] !== null ? autolinker.link(feature.properties['farm_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_guarantaplots_7_0(feature) {
+            switch(String(feature.properties['plot_type'])) {
+                case 'control':
+                    return {
+                pane: 'pane_guarantaplots_7',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(226,189,126,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'treatment':
+                    return {
+                pane: 'pane_guarantaplots_7',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(203,140,240,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_guarantaplots_7');
+        map.getPane('pane_guarantaplots_7').style.zIndex = 407;
+        map.getPane('pane_guarantaplots_7').style['mix-blend-mode'] = 'normal';
+        var layer_guarantaplots_7 = new L.geoJson(json_guarantaplots_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_guarantaplots_7',
+            layerName: 'layer_guarantaplots_7',
+            pane: 'pane_guarantaplots_7',
+            onEachFeature: pop_guarantaplots_7,
+            style: style_guarantaplots_7_0,
+        });
+        bounds_group.addLayer(layer_guarantaplots_7);
+        map.addLayer(layer_guarantaplots_7);
+        function pop_guaranta_8(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['_uid_'] !== null ? autolinker.link(feature.properties['_uid_'].toLocaleString()) : '') + '</td>\
@@ -189,9 +467,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_guaranta_1_0() {
+        function style_guaranta_8_0() {
             return {
-                pane: 'pane_guaranta_1',
+                pane: 'pane_guaranta_8',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -202,315 +480,30 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_guaranta_1');
-        map.getPane('pane_guaranta_1').style.zIndex = 401;
-        map.getPane('pane_guaranta_1').style['mix-blend-mode'] = 'normal';
-        var layer_guaranta_1 = new L.geoJson(json_guaranta_1, {
+        map.createPane('pane_guaranta_8');
+        map.getPane('pane_guaranta_8').style.zIndex = 408;
+        map.getPane('pane_guaranta_8').style['mix-blend-mode'] = 'normal';
+        var layer_guaranta_8 = new L.geoJson(json_guaranta_8, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_guaranta_1',
-            layerName: 'layer_guaranta_1',
-            pane: 'pane_guaranta_1',
-            onEachFeature: pop_guaranta_1,
-            style: style_guaranta_1_0,
+            dataVar: 'json_guaranta_8',
+            layerName: 'layer_guaranta_8',
+            pane: 'pane_guaranta_8',
+            onEachFeature: pop_guaranta_8,
+            style: style_guaranta_8_0,
         });
-        bounds_group.addLayer(layer_guaranta_1);
-        map.addLayer(layer_guaranta_1);
-        map.createPane('pane_MaskedMaxNDVI_2');
-        map.getPane('pane_MaskedMaxNDVI_2').style.zIndex = 402;
-        var img_MaskedMaxNDVI_2 = 'data/MaskedMaxNDVI_2.png';
-        var img_bounds_MaskedMaxNDVI_2 = [[-22.60978721753265,-50.161655970648845],[-22.547084810701104,-50.11539273351669]];
-        var layer_MaskedMaxNDVI_2 = new L.imageOverlay(img_MaskedMaxNDVI_2,
-                                              img_bounds_MaskedMaxNDVI_2,
-                                              {pane: 'pane_MaskedMaxNDVI_2'});
-        bounds_group.addLayer(layer_MaskedMaxNDVI_2);
-        map.addLayer(layer_MaskedMaxNDVI_2);
-        map.createPane('pane_MaskedDEM_3');
-        map.getPane('pane_MaskedDEM_3').style.zIndex = 403;
-        var img_MaskedDEM_3 = 'data/MaskedDEM_3.png';
-        var img_bounds_MaskedDEM_3 = [[-22.60973151005297,-50.161655970648845],[-22.547106995996085,-50.115392733516664]];
-        var layer_MaskedDEM_3 = new L.imageOverlay(img_MaskedDEM_3,
-                                              img_bounds_MaskedDEM_3,
-                                              {pane: 'pane_MaskedDEM_3'});
-        bounds_group.addLayer(layer_MaskedDEM_3);
-        map.addLayer(layer_MaskedDEM_3);
-        map.createPane('pane_flowaccumulation_4');
-        map.getPane('pane_flowaccumulation_4').style.zIndex = 404;
-        var img_flowaccumulation_4 = 'data/flowaccumulation_4.png';
-        var img_bounds_flowaccumulation_4 = [[-22.60973151005297,-50.161655970648845],[-22.547106995996085,-50.115392733516664]];
-        var layer_flowaccumulation_4 = new L.imageOverlay(img_flowaccumulation_4,
-                                              img_bounds_flowaccumulation_4,
-                                              {pane: 'pane_flowaccumulation_4'});
-        bounds_group.addLayer(layer_flowaccumulation_4);
-        map.addLayer(layer_flowaccumulation_4);
-        function pop_FlowLine_5(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['cat'] !== null ? autolinker.link(feature.properties['cat'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_FlowLine_5_0() {
-            return {
-                pane: 'pane_FlowLine_5',
-                opacity: 1,
-                color: 'rgba(164,113,88,1.0)',
-                dashArray: '',
-                lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 1.0,
-                fillOpacity: 0,
-                interactive: true,
-            }
-        }
-        map.createPane('pane_FlowLine_5');
-        map.getPane('pane_FlowLine_5').style.zIndex = 405;
-        map.getPane('pane_FlowLine_5').style['mix-blend-mode'] = 'normal';
-        var layer_FlowLine_5 = new L.geoJson(json_FlowLine_5, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_FlowLine_5',
-            layerName: 'layer_FlowLine_5',
-            pane: 'pane_FlowLine_5',
-            onEachFeature: pop_FlowLine_5,
-            style: style_FlowLine_5_0,
-        });
-        bounds_group.addLayer(layer_FlowLine_5);
-        map.addLayer(layer_FlowLine_5);
-        function pop_guaranta_6(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['ndvi'] !== null ? autolinker.link(feature.properties['ndvi'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['clay_0_5'] !== null ? autolinker.link(feature.properties['clay_0_5'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['clay_5_15'] !== null ? autolinker.link(feature.properties['clay_5_15'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['clay_15_30'] !== null ? autolinker.link(feature.properties['clay_15_30'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['sand_0_5'] !== null ? autolinker.link(feature.properties['sand_0_5'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['sand_5_15'] !== null ? autolinker.link(feature.properties['sand_5_15'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['sand_15_30'] !== null ? autolinker.link(feature.properties['sand_15_30'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['lat'] !== null ? autolinker.link(feature.properties['lat'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['lon'] !== null ? autolinker.link(feature.properties['lon'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['field_name'] !== null ? autolinker.link(feature.properties['field_name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['cluster'] !== null ? autolinker.link(feature.properties['cluster'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_guaranta_6_0(feature) {
-            switch(String(feature.properties['cluster'])) {
-                case '0':
-                    return {
-                pane: 'pane_guaranta_6',
-                radius: 4.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(82,196,200,1.0)',
-                interactive: true,
-            }
-                    break;
-                case '1':
-                    return {
-                pane: 'pane_guaranta_6',
-                radius: 4.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(129,46,202,1.0)',
-                interactive: true,
-            }
-                    break;
-                case '2':
-                    return {
-                pane: 'pane_guaranta_6',
-                radius: 4.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(163,229,110,1.0)',
-                interactive: true,
-            }
-                    break;
-                default:
-                    return {
-                pane: 'pane_guaranta_6',
-                radius: 4.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,0.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(213,107,101,1.0)',
-                interactive: true,
-            }
-                    break;
-            }
-        }
-        map.createPane('pane_guaranta_6');
-        map.getPane('pane_guaranta_6').style.zIndex = 406;
-        map.getPane('pane_guaranta_6').style['mix-blend-mode'] = 'normal';
-        var layer_guaranta_6 = new L.geoJson(json_guaranta_6, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_guaranta_6',
-            layerName: 'layer_guaranta_6',
-            pane: 'pane_guaranta_6',
-            onEachFeature: pop_guaranta_6,
-            pointToLayer: function (feature, latlng) {
-                var context = {
-                    feature: feature,
-                    variables: {}
-                };
-                return L.circleMarker(latlng, style_guaranta_6_0(feature));
-            },
-        });
-        bounds_group.addLayer(layer_guaranta_6);
-        map.addLayer(layer_guaranta_6);
-        function pop_guarantaplots_7(feature, layer) {
-            var popupContent = '<table>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['plot_type'] !== null ? autolinker.link(feature.properties['plot_type'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['field_name'] !== null ? autolinker.link(feature.properties['field_name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['farm_name'] !== null ? autolinker.link(feature.properties['farm_name'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_guarantaplots_7_0(feature) {
-            switch(String(feature.properties['plot_type'])) {
-                case 'control':
-                    return {
-                pane: 'pane_guarantaplots_7',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(226,189,126,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'treatment':
-                    return {
-                pane: 'pane_guarantaplots_7',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(203,140,240,1.0)',
-                interactive: true,
-            }
-                    break;
-                default:
-                    return {
-                pane: 'pane_guarantaplots_7',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(35,231,159,1.0)',
-                interactive: true,
-            }
-                    break;
-            }
-        }
-        map.createPane('pane_guarantaplots_7');
-        map.getPane('pane_guarantaplots_7').style.zIndex = 407;
-        map.getPane('pane_guarantaplots_7').style['mix-blend-mode'] = 'normal';
-        var layer_guarantaplots_7 = new L.geoJson(json_guarantaplots_7, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_guarantaplots_7',
-            layerName: 'layer_guarantaplots_7',
-            pane: 'pane_guarantaplots_7',
-            onEachFeature: pop_guarantaplots_7,
-            style: style_guarantaplots_7_0,
-        });
-        bounds_group.addLayer(layer_guarantaplots_7);
-        map.addLayer(layer_guarantaplots_7);
+        bounds_group.addLayer(layer_guaranta_8);
+        map.addLayer(layer_guaranta_8);
         var baseMaps = {};
         var overlaysTree = [
-            {label: 'guaranta plots<br /><table><tr><td style="text-align: center;"><img src="legend/guarantaplots_7_control0.png" /></td><td>control</td></tr><tr><td style="text-align: center;"><img src="legend/guarantaplots_7_treatment1.png" /></td><td>treatment</td></tr><tr><td style="text-align: center;"><img src="legend/guarantaplots_7_2.png" /></td><td></td></tr></table>', layer: layer_guarantaplots_7},
-            {label: 'guaranta<br /><table><tr><td style="text-align: center;"><img src="legend/guaranta_6_00.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/guaranta_6_11.png" /></td><td>1</td></tr><tr><td style="text-align: center;"><img src="legend/guaranta_6_22.png" /></td><td>2</td></tr><tr><td style="text-align: center;"><img src="legend/guaranta_6_3.png" /></td><td></td></tr></table>', layer: layer_guaranta_6},
+            {label: '<img src="legend/guaranta_8.png" /> guaranta', layer: layer_guaranta_8},
+            {label: 'guaranta plots<br /><table><tr><td style="text-align: center;"><img src="legend/guarantaplots_7_control0.png" /></td><td>control</td></tr><tr><td style="text-align: center;"><img src="legend/guarantaplots_7_treatment1.png" /></td><td>treatment</td></tr></table>', layer: layer_guarantaplots_7},
+            {label: 'Intra Field Cluster<br /><table><tr><td style="text-align: center;"><img src="legend/IntraFieldCluster_6_00.png" /></td><td>0</td></tr><tr><td style="text-align: center;"><img src="legend/IntraFieldCluster_6_11.png" /></td><td>1</td></tr><tr><td style="text-align: center;"><img src="legend/IntraFieldCluster_6_22.png" /></td><td>2</td></tr></table>', layer: layer_IntraFieldCluster_6},
             {label: '<img src="legend/FlowLine_5.png" /> Flow Line', layer: layer_FlowLine_5},
             {label: "flowaccumulation", layer: layer_flowaccumulation_4},
-            {label: "Masked DEM", layer: layer_MaskedDEM_3},
-            {label: "Masked Max NDVI", layer: layer_MaskedMaxNDVI_2},
-            {label: '<img src="legend/guaranta_1.png" /> guaranta', layer: layer_guaranta_1},
+            {label: "DEM", layer: layer_DEM_3},
+            {label: "Last NDVI", layer: layer_LastNDVI_2},
+            {label: "Max NDVI", layer: layer_MaxNDVI_1},
             {label: "Google Satellite", layer: layer_GoogleSatellite_0},]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
