@@ -65,10 +65,10 @@ var lyr_clusters_4 = new ol.layer.Vector({
                 popuplayertitle: "clusters",
                 interactive: true,
     title: 'clusters<br />\
-    <img src="styles/legend/clusters_4_0.png" /> {"rainfall": "1/3", "sand_5_30": "2/3", "clay_5_30": "2/3", "soil class": "Latossolo"}<br />\
-    <img src="styles/legend/clusters_4_1.png" /> {"rainfall": "1/3", "sand_5_30": "3/3", "clay_5_30": "1/3", "soil class": "Latossolo"}<br />\
-    <img src="styles/legend/clusters_4_2.png" /> {"rainfall": "1/3", "sand_5_30": "3/3", "clay_5_30": "2/3", "soil class": "Latossolo"}<br />\
-    <img src="styles/legend/clusters_4_3.png" /> {"rainfall": "1/3", "sand_5_30": "3/3", "clay_5_30": "4/3", "soil class": "Latossolo"}<br />\
+    <img src="styles/legend/clusters_4_0.png" /> rainfall: Low, sand_5_30: High, clay_5_30: 4/3, soil class: Latossolo<br />\
+    <img src="styles/legend/clusters_4_1.png" /> rainfall: Low, sand_5_30: High, clay_5_30: Low, soil class: Latossolo<br />\
+    <img src="styles/legend/clusters_4_2.png" /> rainfall: Low, sand_5_30: High, clay_5_30: Medium, soil class: Latossolo<br />\
+    <img src="styles/legend/clusters_4_3.png" /> rainfall: Low, sand_5_30: Medium, clay_5_30: Medium, soil class: Latossolo<br />\
     <img src="styles/legend/clusters_4_4.png" /> <br />'
         });
 var format_guaranta_plot_5 = new ol.format.GeoJSON();
